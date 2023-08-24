@@ -33,8 +33,8 @@ const Register = () => {
             setRegisterError("Please add atleast two numbers");
             return;
         }
-        else if(password.length < 6){
-            setRegisterError("password cant be less than 6 characters");
+        else if(password.length < 8){
+            setRegisterError("password cant be less than 8 characters");
             return;
         }
         console.log(email, password);

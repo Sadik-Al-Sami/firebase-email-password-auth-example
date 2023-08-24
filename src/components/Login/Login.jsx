@@ -15,19 +15,22 @@ const Login = () => {
         const password = form.password.value;
         setError('');
         setSuccess('');
-        if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
-            setError('Please add atleaset two uppercase');
-            return;
-        }
-        else if (!/(?=.*[!@#$&*])/.test(password)) {
-            setError('Please use special characters');
-            return;
-        }
-        else if (password.length < 6) {
-            setError('Password must be more than 6 characters');
-            return;
-        }
-        setSuccess('Account Created Successfully');
+
+        // !Useless validation on login
+        // if (!/(?=.*[A-Z].*[A-Z])/.test(password)) {
+        //     setError('Please add atleaset two uppercase');
+        //     return;
+        // }
+        // else if (!/(?=.*[!@#$&*])/.test(password)) {
+        //     setError('Please use special characters');
+        //     return;
+        // }
+        // else if (password.length < 6) {
+        //     setError('Password must be more than 6 characters');
+        //     return;
+        // }
+        // !Useless validation on login
+        
         e.target.reset();
         signInWithEmailAndPassword(auth, email, password)
             .then(result => {
