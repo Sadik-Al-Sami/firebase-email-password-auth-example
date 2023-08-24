@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import app from '../../firebase/firebase.init';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
+    const auth = getAuth(app);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
@@ -25,6 +29,13 @@ const Login = () => {
         }
         setSuccess('Account Created Successfully');
         e.target.reset();
+        signInWithEmailAndPassword(auth, email, password)
+            .then(result => {
+                const loggedUser = result.user;
+                setSuccess("User Logged In");
+            }).catch(error => {
+                setError(error.message);
+            })
     }
     return (
         <div>
@@ -51,6 +62,7 @@ const Login = () => {
                                     </div>
                                     {
                                         <div>
+                                            <p><small>New Here? Please <Link to="/register" className='text-accent'>Register</Link> </small></p>
                                             <p className='text-danger text-center mt-2 fw-semibold fs-4'>{error}</p>
                                             <p className='text-success text-center mt-2 fw-semibold fs-4'>{success}</p>
                                         </div>
