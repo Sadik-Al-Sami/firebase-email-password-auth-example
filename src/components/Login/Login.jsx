@@ -7,6 +7,7 @@ const Login = () => {
     const auth = getAuth(app);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [user, setUser] = useState('');
 
     const handleLogin = e => {
         e.preventDefault();
@@ -41,6 +42,7 @@ const Login = () => {
                     setError(`an email has been sent to ${loggedUser.email}, please verify before doing anything in !!`);
                 }
                 setSuccess("User Logged In");
+                setUser(loggedUser.displayName);
             }).catch(error => {
                 setError(error.message);
             })
@@ -73,6 +75,7 @@ const Login = () => {
                                             <p><small>New Here? Please <Link to="/register" className='text-accent'>Register</Link> </small></p>
                                             <p className='text-danger text-center mt-2 fw-semibold fs-4'>{error}</p>
                                             <p className='text-success text-center mt-2 fw-semibold fs-4'>{success}</p>
+                                            {user && <p className='text-success text-center mt-2 fw-semibold fs-4'>Welcome back {user}</p>}
                                         </div>
                                     }
                                 </form>

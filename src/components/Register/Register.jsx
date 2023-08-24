@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, sendEmailVerification, updateProfile } from "firebase/auth";
 import app from '../../firebase/firebase.init';
 import { Link } from 'react-router-dom';
 
@@ -33,9 +33,9 @@ const Register = () => {
 
         const email = e.target.email.value;
         const password = e.target.password.value;
+        const name = e.target.name.value;
 
         // ? Validation part * //
-
         if (!/(?=.*[A-Z])/.test(password)) {
             setRegisterError('Please add atleast one uppercase');
             return;
@@ -49,8 +49,6 @@ const Register = () => {
             return;
         }
 
-        // ? Validation part * //
-
         console.log(email, password);
 
         // ? Create user in Firebase //
@@ -62,17 +60,15 @@ const Register = () => {
                 e.target.reset();
                 setSuccess("User Account Created");
                 emailVerification(loggedUser);
+                updateUserData(loggedUser, name)
             }).catch(error => {
                 console.error(error.message);
                 setRegisterError(error.message);
                 setSuccess('');
             });
-        // ? Create user in Firebase //
-
     }
 
     // ? Email verification //
-
     const emailVerification = (loggedUser) => {
         sendEmailVerification(loggedUser)
             .then((result) => {
@@ -81,12 +77,25 @@ const Register = () => {
             });
     }
 
-    // ? Email verification //
+    // ? Update profile
+    const updateUserData = (user, name) => {
+        updateProfile(user, {
+            displayName: name
+        })
+        .then(()=>{
+            console.log("User name updated");
+        }).catch((error)=>{
+            alert("Unfortunately an error has occured", error.message);
+            setRegisterError(error.message);
+        })
+    }
 
     return (
         <div className='w-50 mx-auto'>
             <h2>Register</h2>
             <form onSubmit={(e) => handleSubmit(e)}>
+                <input className='w-50 mb-4 rounded' type="text" name='name' id='name' placeholder='your name' required />
+                <br />
                 <input className='w-50 mb-4 rounded' onChange={(e) => handleEmailChange(e)} type="email" name='email' id='email' placeholder='your email please' required />
                 <br />
                 <input className='w-50 mb-4 rounded' onBlur={(e) => handlePasswordBlur(e)} type="password" name='password' id='password' placeholder='your password please' required />
