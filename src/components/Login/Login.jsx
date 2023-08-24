@@ -30,11 +30,16 @@ const Login = () => {
         //     return;
         // }
         // !Useless validation on login
-        
         e.target.reset();
+
+
         signInWithEmailAndPassword(auth, email, password)
             .then(result => {
                 const loggedUser = result.user;
+                console.log(loggedUser);
+                if (!loggedUser.emailVerified) {
+                    setError(`an email has been sent to ${loggedUser.email}, please verify before doing anything in !!`);
+                }
                 setSuccess("User Logged In");
             }).catch(error => {
                 setError(error.message);
